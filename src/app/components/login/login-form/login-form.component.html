@@ -1,0 +1,30 @@
+<div class="wrapper">
+  <app-form
+    [formGroup]="loginFormGroup"
+    (formSubmit)="login($event)">
+    <h3>Sign in to application</h3>
+    <mat-form-field>
+      <mat-label>Iuser name</mat-label>
+      <input
+        matInput
+        placeholder="Enter your name"
+        formControlName="userName">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        placeholder="Enter your password"
+        formControlName="password"
+        [type]="isHidePassword ? 'password' : 'text'">
+      <button
+        matSuffix
+        mat-icon-button
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="isHidePassword"
+        (click)="$event.preventDefault(); isHidePassword = !isHidePassword">
+        <mat-icon>{{isHidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+    </mat-form-field>
+  </app-form>
+</div>

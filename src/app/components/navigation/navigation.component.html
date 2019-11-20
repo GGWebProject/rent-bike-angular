@@ -1,0 +1,11 @@
+<nav>
+  <ul>
+    <li *ngFor="let link of links">
+      <a
+        routerLinkActive="active"
+        [href]="link.link">
+        {{link.label | capitalize}}
+      </a>
+    </li>
+  </ul>
+</nav>
