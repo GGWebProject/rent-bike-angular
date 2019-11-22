@@ -1,11 +1,37 @@
-app-form {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.login-form__wrapper {
 
-  ::ng-deep form {
+  &_register {
+
+  }
+
+  h3 {
+    margin: 0 0 20px;
+    text-align: center;
+  }
+
+  .login-form {
+    width: 100%;
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    ::ng-deep form {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  .login-form__button {
+    display: block;
+    margin: 20px auto 0;
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: color .3s;
+
+    &:hover {
+      color: #673ab7;
+    }
   }
 }

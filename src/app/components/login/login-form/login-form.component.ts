@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {MatDialogRef} from '@angular/material';
+import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
+import { MatDialogRef} from '@angular/material';
 
 @Component({
   selector: 'app-login-form',
@@ -9,19 +9,31 @@ import {MatDialogRef} from '@angular/material';
 })
 export class LoginFormComponent implements OnInit {
 
+  public isLogin: boolean;
   public isHidePassword: boolean;
-  public loginFormGroup: FormGroup;
+  public formGroup: FormGroup;
+
+  public loginFormEmail: AbstractControl | null;
+  public loginFormPassword: AbstractControl | null;
+  public loginFormConfirmPassword: AbstractControl | null;
+  public loginFormUserName: AbstractControl | null;
 
   constructor(
-    public dialogRef: MatDialogRef<LoginFormComponent>,
+    private dialogRef: MatDialogRef<LoginFormComponent>,
   ) { }
 
-  ngOnInit() {
+  public ngOnInit(): void {
+    this.isLogin = true;
     this.isHidePassword = true;
-    this.loginFormGroup = new FormGroup({
-      userName: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required, Validators.minLength(8)]),
-    });
+
+    this.formGroup = this.createFromGroup();
+  }
+
+  public changeIsLogin(): void {
+    this.isLogin = !this.isLogin;
+    this.isHidePassword = true;
+
+    this.formGroup = this.createFromGroup();
   }
 
   public login(formGroup: FormGroup): void {
@@ -30,5 +42,36 @@ export class LoginFormComponent implements OnInit {
     if (formGroup.valid) {
       this.dialogRef.close();
     }
+  }
+
+  private createFromGroup(): FormGroup {
+    const fg: FormGroup = new FormGroup({
+      email: new FormControl(null, [Validators.required, Validators.email]),
+      password: new FormControl(null, [Validators.required, Validators.minLength(8), this.checkPassword.bind(this)]),
+      confirmPassword: new FormControl({value: null, disabled: this.isLogin},
+        [Validators.required, Validators.minLength(8), this.checkPassword.bind(this)]),
+      userName: new FormControl({value: null, disabled: this.isLogin}, [Validators.required])
+    });
+
+    this.loginFormEmail = fg.get('email');
+    this.loginFormPassword = fg.get('password');
+    this.loginFormConfirmPassword = fg.get('confirmPassword');
+    this.loginFormUserName = fg.get('userName');
+
+    return fg;
+  }
+
+  private checkPassword(): {[key: string]: boolean} | null {
+
+    if (this.isLogin || !this.formGroup) {
+      return null;
+    }
+
+    if (this.loginFormConfirmPassword.value !== this.loginFormPassword.value) {
+      console.log(this.loginFormConfirmPassword.value, this.loginFormPassword.value);
+      return { notSame: true};
+    }
+
+    return null;
   }
 }

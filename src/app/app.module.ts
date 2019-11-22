@@ -14,7 +14,7 @@ import { LoginFormComponent } from './components/login/login-form/login-form.com
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { FormComponent } from './shared/components/form/form.component';
-import {MatButtonModule, MatDialogModule, MatIconModule, MatInputModule} from '@angular/material';
+import { MatButtonModule, MatDialogModule, MatIconModule, MatInputModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { NavigationComponent } from './components/navigation/navigation.component';

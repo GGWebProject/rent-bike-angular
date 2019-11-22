@@ -1,14 +1,18 @@
-<div class="wrapper">
+<div [ngClass]="{'login-form__wrapper' : true, 'login-form__wrapper_register' : !isLogin}">
   <app-form
-    [formGroup]="loginFormGroup"
-    (formSubmit)="login($event)">
-    <h3>Sign in to application</h3>
+    [formGroup]="formGroup"
+    (formSubmit)="login($event)"
+    [ngClass]="{'login-form' : true, 'login-form_register' : !isLogin}"
+    >
+    <h3>{{isLogin ? "Sign in" : "Register"}} to application</h3>
     <mat-form-field>
-      <mat-label>Iuser name</mat-label>
+      <mat-label>Email</mat-label>
       <input
         matInput
-        placeholder="Enter your name"
-        formControlName="userName">
+        placeholder="Enter your email address"
+        type="email"
+        formControlName="email">
+      <mat-error *ngIf="loginFormEmail.errors">1</mat-error>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Password</mat-label>
@@ -17,6 +21,7 @@
         placeholder="Enter your password"
         formControlName="password"
         [type]="isHidePassword ? 'password' : 'text'">
+        <mat-error *ngIf="loginFormPassword.errors">2</mat-error>
       <button
         matSuffix
         mat-icon-button
@@ -26,5 +31,32 @@
         <mat-icon>{{isHidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
       </button>
     </mat-form-field>
+
+    <!-- Register form fields -->
+    <ng-container *ngIf="!isLogin">
+      <mat-form-field>
+        <mat-label>Confirm password</mat-label>
+        <input
+          matInput
+          placeholder="Enter your password again"
+          formControlName="confirmPassword"
+          [type]="isHidePassword ? 'password' : 'text'">
+        <mat-error *ngIf="loginFormConfirmPassword.errors">3</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Enter your user name</mat-label>
+        <input
+          matInput
+          placeholder="User name"
+          type="text"
+          formControlName="userName">
+        <mat-error *ngIf="loginFormUserName.errors">4</mat-error>
+      </mat-form-field>
+    </ng-container>
   </app-form>
+  <button
+    class="login-form__button"
+    (click)="changeIsLogin()">
+    {{isLogin ? "Are you not registered?" : 'Do you have account?'}}
+  </button>
 </div>

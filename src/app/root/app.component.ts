@@ -10,11 +10,11 @@ import {LoginFormComponent} from '../components/login/login-form/login-form.comp
 export class AppComponent {
   title = 'rent-bike-front-end';
 
-  constructor(public dialog: MatDialog) {}
+  constructor(private dialog: MatDialog) {}
 
   public openLoginModal() {
     const dialogRef = this.dialog.open(LoginFormComponent, {
-      maxWidth: '320px',
+      maxWidth: '420px',
     });
   }
 }
