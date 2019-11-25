@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import { MatDialogRef} from '@angular/material';
+import {DataService} from '../../../common/services/data.service';
+import {User} from '../../../common/entities';
 
 @Component({
   selector: 'app-login-form',
@@ -20,6 +22,7 @@ export class LoginFormComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<LoginFormComponent>,
+    private dataService: DataService,
   ) { }
 
   public ngOnInit(): void {
@@ -36,11 +39,25 @@ export class LoginFormComponent implements OnInit {
     this.formGroup = this.createFromGroup();
   }
 
-  public login(formGroup: FormGroup): void {
+  public submitForm(formGroup: FormGroup): void {
     console.log(formGroup);
+    this.dataService.getUsers()
+      .subscribe();
 
     if (formGroup.valid) {
-      this.dialogRef.close();
+      let user: User = new User();
+      const { email, password, userName } = formGroup.value;
+      if (this.isLogin) {
+        user = { ...user, email, password };
+        this.dataService.loginUser(user).subscribe(
+          (data) => console.log('Login Access token:', data),
+        );
+      } else {
+        user = { ...user, email, password, userName };
+        this.dataService.registerUser(user).subscribe(
+          (data) => console.log('Register Access token:', data),
+        );
+      }
     }
   }
 
@@ -61,17 +78,22 @@ export class LoginFormComponent implements OnInit {
     return fg;
   }
 
-  private checkPassword(): {[key: string]: boolean} | null {
+  private checkPassword(control: AbstractControl): {[key: string]: boolean} | null {
 
-    if (this.isLogin || !this.formGroup) {
+    if (this.isLogin) {
       return null;
     }
 
     if (this.loginFormConfirmPassword.value !== this.loginFormPassword.value) {
-      console.log(this.loginFormConfirmPassword.value, this.loginFormPassword.value);
-      return { notSame: true};
-    }
 
+      if (control === this.loginFormPassword) {
+        this.loginFormConfirmPassword.setErrors({ notSame: true});
+        return;
+      } else if (control === this.loginFormConfirmPassword) {
+        return { notSame: true};
+      }
+    }
+    this.loginFormConfirmPassword.setErrors(null);
     return null;
   }
 }

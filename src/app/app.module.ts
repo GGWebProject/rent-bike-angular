@@ -20,6 +20,7 @@ import { HomePageComponent } from './components/home-page/home-page.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { CapitalizePipe } from './common/pipes/capitalize.pipe';
 import { RentPageComponent } from './components/rent-page/rent-page.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { RentPageComponent } from './components/rent-page/rent-page.component';
     MatButtonModule,
     MatIconModule,
     ReactiveFormsModule,
-    MatDialogModule
+    MatDialogModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

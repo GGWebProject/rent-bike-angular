@@ -1,7 +1,7 @@
 <div [ngClass]="{'login-form__wrapper' : true, 'login-form__wrapper_register' : !isLogin}">
   <app-form
     [formGroup]="formGroup"
-    (formSubmit)="login($event)"
+    (formSubmit)="submitForm($event)"
     [ngClass]="{'login-form' : true, 'login-form_register' : !isLogin}"
     >
     <h3>{{isLogin ? "Sign in" : "Register"}} to application</h3>
