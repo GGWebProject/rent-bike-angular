@@ -1,6 +1,6 @@
 import {ILoginState} from '../../common/interfaces';
 import {Action, ActionReducer, createReducer, on} from '@ngrx/store';
-import * as loginAction from '../actions/login.action';
+import * as loginAction from '../actions/user.action';
 
 const initialState: ILoginState = {
   isLogin: false,
@@ -9,8 +9,8 @@ const initialState: ILoginState = {
 
 const loginReducer: ActionReducer<ILoginState> = createReducer(
   initialState,
-  on(loginAction.loginSignOut, state => ({...state, isLogin: false, user: null})),
-  on(loginAction.loginSignInSuccess, (state, { user }) => (
+  on(loginAction.userSignOut, state => ({...state, isLogin: false, user: null})),
+  on(loginAction.userSignInSuccess, (state, { user }) => (
     {
       ...state,
       isLogin: true,

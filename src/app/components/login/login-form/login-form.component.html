@@ -1,62 +1,68 @@
 <div [ngClass]="{'login-form__wrapper' : true, 'login-form__wrapper_register' : !isLogin}">
   <app-form
     [formGroup]="formGroup"
-    (formSubmit)="submitForm($event)"
+    (formSubmit)="submitForm()"
     [ngClass]="{'login-form' : true, 'login-form_register' : !isLogin}"
     >
     <h3>{{isLogin ? "Sign in" : "Register"}} to application</h3>
     <mat-form-field>
       <mat-label>Email</mat-label>
       <input
+        required
         matInput
         placeholder="Enter your email address"
         type="email"
         formControlName="email">
-      <mat-error *ngIf="loginFormEmail.errors">1</mat-error>
+      <mat-error *ngIf="formControlEmail?.errors">1</mat-error>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Password</mat-label>
       <input
+        required
         matInput
         placeholder="Enter your password"
         formControlName="password"
         [type]="isHidePassword ? 'password' : 'text'">
-        <mat-error *ngIf="loginFormPassword.errors">2</mat-error>
+        <mat-error *ngIf="formControlPassword?.errors">2</mat-error>
+        <mat-hint align="end">Min 8 characters</mat-hint>
       <button
         matSuffix
         mat-icon-button
         [attr.aria-label]="'Hide password'"
         [attr.aria-pressed]="isHidePassword"
-        (click)="$event.preventDefault(); isHidePassword = !isHidePassword">
+        (click)="$event.preventDefault(); $event.stopPropagation(); isHidePassword = !isHidePassword">
         <mat-icon>{{isHidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
       </button>
     </mat-form-field>
 
     <!-- Register form fields -->
-    <ng-container *ngIf="!isLogin">
-      <mat-form-field>
+    <ng-container>
+      <mat-form-field [ngStyle]="{'display': isLogin ? 'none' : 'initial'}">
         <mat-label>Confirm password</mat-label>
         <input
+          required
           matInput
           placeholder="Enter your password again"
           formControlName="confirmPassword"
           [type]="isHidePassword ? 'password' : 'text'">
-        <mat-error *ngIf="loginFormConfirmPassword.errors">3</mat-error>
+        <mat-error *ngIf="formControlConfirmPassword?.errors">3</mat-error>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field [ngStyle]="{'display': isLogin ? 'none' : 'initial'}">
         <mat-label>Enter your user name</mat-label>
         <input
+          required
           matInput
           placeholder="User name"
           type="text"
           formControlName="userName">
-        <mat-error *ngIf="loginFormUserName.errors">4</mat-error>
+        <mat-error *ngIf="formControlUserName?.errors">4</mat-error>
       </mat-form-field>
     </ng-container>
   </app-form>
   <button
+    type="reset"
     class="login-form__button"
-    (click)="changeIsLogin()">
+    (click)="changeForms()">
     {{isLogin ? "Are you not registered?" : 'Do you have account?'}}
   </button>
 </div>

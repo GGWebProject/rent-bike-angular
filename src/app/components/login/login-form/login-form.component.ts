@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AfterViewInit, Component, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {AbstractControl, FormControl, FormGroup, FormGroupDirective, Validators} from '@angular/forms';
 import { MatDialogRef} from '@angular/material';
 import {DataService} from '../../../common/services/data.service';
 import {User} from '../../../common/entities';
+import {FormComponent} from '../../../shared/components/form/form.component';
 
 @Component({
   selector: 'app-login-form',
@@ -15,10 +16,10 @@ export class LoginFormComponent implements OnInit {
   public isHidePassword: boolean;
   public formGroup: FormGroup;
 
-  public loginFormEmail: AbstractControl | null;
-  public loginFormPassword: AbstractControl | null;
-  public loginFormConfirmPassword: AbstractControl | null;
-  public loginFormUserName: AbstractControl | null;
+  public formControlEmail: AbstractControl | null;
+  public formControlPassword: AbstractControl | null;
+  public formControlConfirmPassword: AbstractControl | null;
+  public formControlUserName: AbstractControl | null;
 
   constructor(
     private dialogRef: MatDialogRef<LoginFormComponent>,
@@ -32,25 +33,32 @@ export class LoginFormComponent implements OnInit {
     this.formGroup = this.createFromGroup();
   }
 
-  public changeIsLogin(): void {
+  public changeForms(): void {
     this.isLogin = !this.isLogin;
     this.isHidePassword = true;
 
-    this.formGroup = this.createFromGroup();
+    if (this.isLogin) {
+      this.formControlConfirmPassword.disable();
+      this.formControlUserName.disable();
+    } else {
+      this.formControlConfirmPassword.enable();
+      this.formControlUserName.enable();
+    }
+
+    this.updateStateFormControls('resetErrors');
   }
 
-  public submitForm(formGroup: FormGroup): void {
-    console.log(formGroup);
-    this.dataService.getUsers()
-      .subscribe();
-
-    if (formGroup.valid) {
+  public submitForm(): void {
+    this.updateStateFormControls('updateValidity');
+    if (this.formGroup.valid) {
       let user: User = new User();
-      const { email, password, userName } = formGroup.value;
+      const { email, password, userName } = this.formGroup.value;
       if (this.isLogin) {
         user = { ...user, email, password };
         this.dataService.loginUser(user).subscribe(
-          (data) => console.log('Login Access token:', data),
+          (data) => {
+            console.log('Login Access token:', data);
+          },
         );
       } else {
         user = { ...user, email, password, userName };
@@ -70,30 +78,50 @@ export class LoginFormComponent implements OnInit {
       userName: new FormControl({value: null, disabled: this.isLogin}, [Validators.required])
     });
 
-    this.loginFormEmail = fg.get('email');
-    this.loginFormPassword = fg.get('password');
-    this.loginFormConfirmPassword = fg.get('confirmPassword');
-    this.loginFormUserName = fg.get('userName');
+    this.formControlEmail = fg.get('email');
+    this.formControlPassword = fg.get('password');
+    this.formControlConfirmPassword = fg.get('confirmPassword');
+    this.formControlUserName = fg.get('userName');
 
     return fg;
   }
 
   private checkPassword(control: AbstractControl): {[key: string]: boolean} | null {
-
-    if (this.isLogin) {
+    if (this.isLogin || control.value === '' || control.value === null) {
       return null;
     }
 
-    if (this.loginFormConfirmPassword.value !== this.loginFormPassword.value) {
+    if (this.formControlConfirmPassword.value !== this.formControlPassword.value) {
 
-      if (control === this.loginFormPassword) {
-        this.loginFormConfirmPassword.setErrors({ notSame: true});
+      if (control === this.formControlPassword) {
+        this.formControlConfirmPassword.setErrors({ notSame: true});
         return;
-      } else if (control === this.loginFormConfirmPassword) {
+      } else if (control === this.formControlConfirmPassword) {
         return { notSame: true};
       }
     }
-    this.loginFormConfirmPassword.setErrors(null);
+    this.formControlConfirmPassword.setErrors(null);
     return null;
+  }
+
+  private updateStateFormControls(method: string): void {
+    Object.keys(this.formGroup.controls).forEach(
+      (controlName: string): void => {
+        const control = this.formGroup.controls[controlName];
+        if (control.enabled) {
+          switch (method) {
+            case 'resetErrors':
+              control.markAsUntouched();
+              control.setErrors(null);
+              break;
+            case 'updateValidity':
+              control.updateValueAndValidity();
+              break;
+            default:
+              break;
+          }
+        }
+      }
+    );
   }
 }

@@ -11,7 +11,7 @@ export class FormComponent implements OnInit {
   constructor() { }
 
   @Input() formGroup: FormGroup;
-  @Output() formSubmit: EventEmitter<FormGroup> = new EventEmitter<FormGroup>();
+  @Output() formSubmit: EventEmitter<void> = new EventEmitter<void>();
 
   ngOnInit() {
 
@@ -19,6 +19,6 @@ export class FormComponent implements OnInit {
 
   public onSubmit(event) {
     event.preventDefault();
-    this.formSubmit.emit(this.formGroup);
+    this.formSubmit.emit();
   }
 }

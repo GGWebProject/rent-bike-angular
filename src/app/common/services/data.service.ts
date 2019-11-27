@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {User} from '../entities';
-import {tap} from 'rxjs/operators';
+import {catchError, concatMap, tap} from 'rxjs/operators';
+import * as jwt_decode from 'jwt-decode';
+import {IAccessToken} from '../interfaces/iaccess-token';
 
 const backendUrl: string = 'http://localhost:3000';
 const usersUrl: string = `${backendUrl}/users`;
+const jwtSecretKey: string = 'json-server-auth-123456';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +29,10 @@ export class DataService {
       );
   }
 
+  // private getUser(): Observable<User> {
+  //   // return this.http.get<User>()
+  // }
+
   // return access token
 
   public registerUser(user: User): Observable<any> {
@@ -35,10 +42,18 @@ export class DataService {
   // return access token
 
   public loginUser(user: User): Observable<any> {
-    return this.getAccessToken(user);
+    return this.getAccessToken(user).pipe(
+      concatMap(
+        (data: IAccessToken) => {
+          console.log(data.accessToken);
+          console.log(jwt_decode(data.accessToken));
+          return of('');
+        }
+      )
+    );
   }
 
-  private getAccessToken(user: User): Observable<any> {
+  private getAccessToken(user: User): Observable<IAccessToken> {
 
     // if user has name - it`s register request, else it is login request
     const requestUrl: string = `${backendUrl}/${user.userName ? 'register' : 'login'}`;
@@ -51,8 +66,9 @@ export class DataService {
     return this.http.post(`${requestUrl}`, body, options)
       .pipe(
         tap(
-          data => console.log(data),
-        )
+          data => console.dir(data),
+        ),
+        catchError(err => of(err))
       );
   }
 }

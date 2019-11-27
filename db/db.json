@@ -1,3 +1,12 @@
 {
-  "users": []
+  "users": [
+    {
+      "email": "vitalygontarenko@gmail.com",
+      "password": "$2a$10$EJ1k3BR8aqsLscsKYAOLtuelnJZhxFhY2x7692YNERe2VQmjCvlem",
+      "accessToken": null,
+      "userName": "Vitali_A",
+      "avatarUrl": null,
+      "id": 1
+    }
+  ]
 }

@@ -21,6 +21,8 @@ import { NavigationComponent } from './components/navigation/navigation.componen
 import { CapitalizePipe } from './common/pipes/capitalize.pipe';
 import { RentPageComponent } from './components/rent-page/rent-page.component';
 import { HttpClientModule } from '@angular/common/http';
+import { httpInterceptorProviders } from './common/interceptors/intex';
+import { UserEffect } from './store/effects';
 
 @NgModule({
   declarations: [
@@ -45,7 +47,7 @@ import { HttpClientModule } from '@angular/common/http';
         strictActionImmutability: true
       }
     }),
-    EffectsModule.forRoot([AppEffects]),
+    EffectsModule.forRoot([AppEffects, UserEffect]),
     StoreRouterConnectingModule.forRoot(),
     BrowserAnimationsModule,
     MatInputModule,
@@ -54,8 +56,9 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
     MatDialogModule,
     HttpClientModule,
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
   ],
-  providers: [],
+  providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
