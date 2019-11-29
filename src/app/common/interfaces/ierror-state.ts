@@ -1,6 +1,6 @@
-import {IError} from './ierror';
+import {IAppError} from './iappError';
 
 export interface IErrorState {
   isError: boolean;
-  error: IError | null;
+  appError: IAppError | null;
 }

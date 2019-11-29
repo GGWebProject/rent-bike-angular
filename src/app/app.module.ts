@@ -12,14 +12,14 @@ import { AppEffects } from './app.effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { LoginFormComponent } from './components/login/login-form/login-form.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { NotFoundPageComponent } from './components/layout/not-found-page/not-found-page.component';
 import { FormComponent } from './shared/components/form/form.component';
 import { MatButtonModule, MatDialogModule, MatIconModule, MatInputModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HomePageComponent } from './components/home-page/home-page.component';
+import { HomePageComponent } from './components/layout/home-page/home-page.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { CapitalizePipe } from './common/pipes/capitalize.pipe';
-import { RentPageComponent } from './components/rent-page/rent-page.component';
+import { RentPageComponent } from './components/layout/rent-page/rent-page.component';
 import { HttpClientModule } from '@angular/common/http';
 import { httpInterceptorProviders } from './common/interceptors/intex';
 import { UserEffect } from './store/effects';
@@ -28,7 +28,7 @@ import { UserEffect } from './store/effects';
   declarations: [
     AppComponent,
     LoginFormComponent,
-    PageNotFoundComponent,
+    NotFoundPageComponent,
     FormComponent,
     HomePageComponent,
     NavigationComponent,

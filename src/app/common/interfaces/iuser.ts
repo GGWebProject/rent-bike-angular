@@ -3,5 +3,4 @@ export interface IUser {
   userName: string | null;
   password: string | null;
   avatarUrl: string | null;
-  accessToken: string | null;
 }

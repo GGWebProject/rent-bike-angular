@@ -1,7 +1,7 @@
-import { Error } from './error';
+import { AppError } from './appError';
 
 describe('Error', () => {
   it('should create an instance', () => {
-    expect(new Error()).toBeTruthy();
+    expect(new AppError()).toBeTruthy();
   });
 });

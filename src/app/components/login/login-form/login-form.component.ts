@@ -1,9 +1,9 @@
-import {AfterViewInit, Component, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
-import {AbstractControl, FormControl, FormGroup, FormGroupDirective, Validators} from '@angular/forms';
-import { MatDialogRef} from '@angular/material';
-import {DataService} from '../../../common/services/data.service';
+import {Component, OnInit} from '@angular/core';
+import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
+import {MatDialogRef} from '@angular/material';
 import {User} from '../../../common/entities';
-import {FormComponent} from '../../../shared/components/form/form.component';
+import {Store} from '@ngrx/store';
+import * as fromStore from '../../../store';
 
 @Component({
   selector: 'app-login-form',
@@ -23,7 +23,7 @@ export class LoginFormComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<LoginFormComponent>,
-    private dataService: DataService,
+    private store: Store<fromStore.IState>,
   ) { }
 
   public ngOnInit(): void {
@@ -55,16 +55,10 @@ export class LoginFormComponent implements OnInit {
       const { email, password, userName } = this.formGroup.value;
       if (this.isLogin) {
         user = { ...user, email, password };
-        this.dataService.loginUser(user).subscribe(
-          (data) => {
-            console.log('Login Access token:', data);
-          },
-        );
+        this.store.dispatch(fromStore.userSignIn({ payload: user }));
       } else {
         user = { ...user, email, password, userName };
-        this.dataService.registerUser(user).subscribe(
-          (data) => console.log('Register Access token:', data),
-        );
+        this.store.dispatch(fromStore.userRegistration({ payload: user }));
       }
     }
   }
