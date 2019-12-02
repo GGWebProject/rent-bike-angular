@@ -28,7 +28,7 @@ export class DataService {
       );
   }
 
-  private getUser(id): Observable<User> {
+  public getUser(id): Observable<User> {
     const requestUrl: string = `${backendUrl}/users/${id}`;
     return this.http.get<User>(requestUrl)
       .pipe(

@@ -11,26 +11,36 @@ import {IAccessToken} from '../../common/interfaces/iaccess-token';
 import * as jwt_decode from 'jwt-decode';
 import {IJwtDecode} from '../../common/interfaces';
 
-
-const toPayload = <T>(action: { payload: T }) => action.payload;
-
 @Injectable()
 export class UserEffect {
   public loginUser$: Observable<Action> = createEffect(() =>
     this.actions$.pipe(
       ofType(userActions.userSignIn),
-      concatMap((action: {type: string; payload: User}) => {
-          return this.dataService.loginUser(action.payload).pipe(
-            tap((accessToken: IAccessToken) => userActions.userSaveAccessToken({ payload: accessToken.accessToken })),
-            map((accessToken: IAccessToken) => {
-              const jwtUser: IJwtDecode = jwt_decode(accessToken.accessToken);
-              console.log(jwtUser.sub);
-              return userActions.userSignOut();
-            }),
-            catchError(() => of(errorActions.errorSet({payload: {errorMessage: '', errorType: ''}})))
-          );
-        }
-      )
+      switchMap((action: {type: string; payload: User}) => {
+        return this.dataService.loginUser(action.payload).pipe(
+          map((accessToken: IAccessToken) => {
+            return userActions.userSaveAccessToken({ payload: accessToken.accessToken });
+          }),
+          catchError(() =>
+            of(errorActions.errorSet({payload: {errorMessage: 'Cann`t get access token', errorType: 'Server/Login User'}})))
+        );
+      })
+    )
+  );
+
+  public saveAccessToken$: Observable<Action> = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userActions.userSaveAccessToken),
+      switchMap((accessToken: {type: string; payload: string}) => {
+        const jwtUser: IJwtDecode = jwt_decode(accessToken.payload);
+        return this.dataService.getUser(jwtUser.sub).pipe(
+          map((data: User) => {
+            return userActions.userSignInSuccess({payload: data});
+          })
+        );
+      }),
+      catchError(() =>
+        of(errorActions.errorSet({payload: {errorMessage: 'Cann`t get User info', errorType: 'Server/User info'}})))
     )
   );
 
@@ -38,10 +48,14 @@ export class UserEffect {
     this.actions$.pipe(
       ofType(userActions.userRegistration),
       switchMap((action: {type: string; payload: User}) => {
-          console.log(action.payload, action.type);
-          return of(errorActions.errorRemove());
-        }
-      )
+        return this.dataService.registerUser(action.payload).pipe(
+          map((accessToken: IAccessToken) => {
+            return userActions.userSaveAccessToken({ payload: accessToken.accessToken });
+          }),
+          catchError(() =>
+            of(errorActions.errorSet({payload: {errorMessage: 'Cann`t get access token', errorType: 'Server/Register user'}})))
+        );
+      })
     )
   );
 

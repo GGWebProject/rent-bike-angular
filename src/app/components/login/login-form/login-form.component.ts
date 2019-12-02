@@ -56,9 +56,11 @@ export class LoginFormComponent implements OnInit {
       if (this.isLogin) {
         user = { ...user, email, password };
         this.store.dispatch(fromStore.userSignIn({ payload: user }));
+        console.log('login:::');
       } else {
         user = { ...user, email, password, userName };
         this.store.dispatch(fromStore.userRegistration({ payload: user }));
+        console.log('register:::');
       }
     }
   }
