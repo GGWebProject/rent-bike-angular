@@ -1,4 +1,4 @@
 export interface ILink {
-  link: string;
+  url: string;
   label: string;
 }

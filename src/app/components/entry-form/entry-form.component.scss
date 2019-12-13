@@ -1,4 +1,4 @@
-.login-form__wrapper {
+.entry-form__wrapper {
 
   &_register {
 
@@ -9,7 +9,7 @@
     text-align: center;
   }
 
-  .login-form {
+  .entry-form {
     width: 100%;
     display: flex;
     align-items: center;
@@ -25,7 +25,7 @@
     }
   }
 
-  .login-form__button {
+  .entry-form__button {
     display: block;
     margin: 20px auto 0;
     background: none;

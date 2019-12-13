@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable, of} from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 import {User} from '../entities';
-import {catchError, concatMap, tap} from 'rxjs/operators';
+import {catchError, tap} from 'rxjs/operators';
 import {IAccessToken} from '../interfaces/iaccess-token';
 
 const backendUrl: string = 'http://localhost:3000';
@@ -32,13 +32,13 @@ export class DataService {
     const requestUrl: string = `${backendUrl}/users/${id}`;
     return this.http.get<User>(requestUrl)
       .pipe(
-        tap((user: User) => console.log(user))
+        catchError(err => throwError(err))
       );
   }
 
   // return access token
 
-  public registerUser(user: User): Observable<IAccessToken> {
+  public registerUser(user: User): Observable<IAccessToken | object> {
     const requestUrl: string = `${backendUrl}/register`;
     const body: string = JSON.stringify({...user});
     const options: object = {
@@ -47,14 +47,13 @@ export class DataService {
 
     return this.http.post(`${requestUrl}`, body, options)
       .pipe(
-        tap(data => console.log(data)),
-        catchError(err => of(err))
+        catchError(err => throwError(err))
       );
   }
 
   // return access token
 
-  public loginUser(user: User): Observable<IAccessToken> {
+  public loginUser(user: User): Observable<IAccessToken | object> {
     const requestUrl: string = `${backendUrl}/login`;
     const body: string = JSON.stringify({...user});
     const options: object = {
@@ -63,8 +62,7 @@ export class DataService {
 
     return this.http.post(`${requestUrl}`, body, options)
       .pipe(
-        tap(data => console.log(data)),
-        catchError(err => of(err))
+        catchError(err => throwError(err))
       );
   }
 }

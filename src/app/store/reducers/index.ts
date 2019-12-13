@@ -29,3 +29,4 @@ export const getErrorStatus: any = createSelector(getErrorState, errorReducer.ge
 
 export const getUser: any = createSelector(getLoginState, loginReducer.getUser);
 export const getLoginStatus: any = createSelector(getLoginState, loginReducer.getLoginStatus);
+export const getAccessToken: any = createSelector(getLoginState, loginReducer.getAccessToken);

@@ -1,28 +1,27 @@
 import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MatDialogRef} from '@angular/material';
-import {User} from '../../../common/entities';
+import {User} from '../../common/entities';
 import {Store} from '@ngrx/store';
-import * as fromStore from '../../../store';
+import * as fromStore from '../../store';
 
 @Component({
-  selector: 'app-login-form',
-  templateUrl: './login-form.component.html',
-  styleUrls: ['./login-form.component.scss']
+  selector: 'app-entry-form',
+  templateUrl: './entry-form.component.html',
+  styleUrls: ['./entry-form.component.scss']
 })
-export class LoginFormComponent implements OnInit {
+export class EntryFormComponent implements OnInit {
 
   public isLogin: boolean;
   public isHidePassword: boolean;
   public formGroup: FormGroup;
-
   public formControlEmail: AbstractControl | null;
   public formControlPassword: AbstractControl | null;
   public formControlConfirmPassword: AbstractControl | null;
   public formControlUserName: AbstractControl | null;
 
   constructor(
-    private dialogRef: MatDialogRef<LoginFormComponent>,
+    private dialogRef: MatDialogRef<EntryFormComponent>,
     private store: Store<fromStore.IState>,
   ) { }
 
@@ -105,6 +104,7 @@ export class LoginFormComponent implements OnInit {
       (controlName: string): void => {
         const control = this.formGroup.controls[controlName];
         if (control.enabled) {
+
           switch (method) {
             case 'resetErrors':
               control.markAsUntouched();

@@ -1,8 +1,8 @@
-<div [ngClass]="{'login-form__wrapper' : true, 'login-form__wrapper_register' : !isLogin}">
+<div [ngClass]="{'entry-form__wrapper' : true, 'entry-form__wrapper_register' : !isLogin}">
   <app-form
     [formGroup]="formGroup"
     (formSubmit)="submitForm()"
-    [ngClass]="{'login-form' : true, 'login-form_register' : !isLogin}"
+    [ngClass]="{'entry-form' : true, 'entry-form_register' : !isLogin}"
     >
     <h3>{{isLogin ? "Sign in" : "Register"}} to application</h3>
     <mat-form-field>
@@ -61,7 +61,7 @@
   </app-form>
   <button
     type="reset"
-    class="login-form__button"
+    class="entry-form__button"
     (click)="changeForms()">
     {{isLogin ? "Are you not registered?" : 'Do you have account?'}}
   </button>

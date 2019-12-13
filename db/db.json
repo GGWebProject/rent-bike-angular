@@ -13,6 +13,20 @@
       "userName": "eqwewqe",
       "avatarUrl": null,
       "id": 2
+    },
+    {
+      "email": "qwerty@qwerty.com",
+      "password": "$2a$10$mIR0NQ7tu2VXcdu4eBsMI.N3IgW46IB.n9fF7W97vrWRDLw5uT5ce",
+      "userName": "Vitali_A",
+      "avatarUrl": null,
+      "id": 3
+    },
+    {
+      "email": "qwe@qeweqwee",
+      "password": "$2a$10$BTkmoTyvIoiZWIeO2oLntO4xUMZf0nRxRvlYGBuEAFVL0X/497GjO",
+      "userName": "eqwewqe",
+      "avatarUrl": null,
+      "id": 4
     }
   ]
 }

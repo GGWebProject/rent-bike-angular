@@ -3,7 +3,7 @@
     <li *ngFor="let link of links">
       <a
         routerLinkActive="active"
-        [href]="link.link">
+        [routerLink]="link.url">
         {{link.label | capitalize}}
       </a>
     </li>

@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import * as userActions from '../actions/user.action';
 import * as errorActions from '../actions/error.action';
-import {catchError, concatMap, map, switchMap, tap} from 'rxjs/operators';
+import {catchError, map, switchMap} from 'rxjs/operators';
 import {DataService} from '../../common/services/data.service';
 import {Observable, of} from 'rxjs';
 import {Action} from '@ngrx/store';
@@ -32,15 +32,15 @@ export class UserEffect {
     this.actions$.pipe(
       ofType(userActions.userSaveAccessToken),
       switchMap((accessToken: {type: string; payload: string}) => {
-        const jwtUser: IJwtDecode = jwt_decode(accessToken.payload);
+        const jwtUser: IJwtDecode = jwt_decode(accessToken.payload); // jwt secret code: json-server-auth-123456
         return this.dataService.getUser(jwtUser.sub).pipe(
           map((data: User) => {
             return userActions.userSignInSuccess({payload: data});
-          })
+          }),
+          catchError(() =>
+            of(errorActions.errorSet({payload: {errorMessage: 'Cann`t get User info', errorType: 'Server/User info'}})))
         );
       }),
-      catchError(() =>
-        of(errorActions.errorSet({payload: {errorMessage: 'Cann`t get User info', errorType: 'Server/User info'}})))
     )
   );
 

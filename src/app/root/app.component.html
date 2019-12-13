@@ -1,10 +1,20 @@
 <header>
   <app-navigation></app-navigation>
-  <button
+  <ng-container *ngIf="!(isLogin$ | async); else signOutButton">
+    <button
+      mat-raised-button
+      color="accent"
+      (click)="openSignInModal()"
+    >Login</button>
+  </ng-container>
+  <ng-template #signOutButton>
+    <button
     mat-raised-button
     color="accent"
-    (click)="openLoginModal()"
-  >Sign in</button>
+    (click)="signOut()">
+      Logout
+    </button>
+  </ng-template>
 </header>
 <main class="layout">
   <router-outlet></router-outlet>

@@ -9,8 +9,7 @@ import { StoreModule } from '@ngrx/store';
 import { reducers, metaReducers } from './store/reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './app.effects';
-import { StoreRouterConnectingModule } from '@ngrx/router-store';
-import { LoginFormComponent } from './components/login/login-form/login-form.component';
+import { EntryFormComponent } from './components/entry-form/entry-form.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NotFoundPageComponent } from './components/layout/not-found-page/not-found-page.component';
 import { FormComponent } from './shared/components/form/form.component';
@@ -27,7 +26,7 @@ import { UserEffect } from './store/effects';
 @NgModule({
   declarations: [
     AppComponent,
-    LoginFormComponent,
+    EntryFormComponent,
     NotFoundPageComponent,
     FormComponent,
     HomePageComponent,
@@ -39,7 +38,13 @@ import { UserEffect } from './store/effects';
     FormsModule,
     BrowserModule,
     AppRoutingModule,
-    StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
+    BrowserAnimationsModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    HttpClientModule,
     StoreModule.forRoot(reducers, {
       metaReducers,
       runtimeChecks: {
@@ -48,15 +53,7 @@ import { UserEffect } from './store/effects';
       }
     }),
     EffectsModule.forRoot([AppEffects, UserEffect]),
-    StoreRouterConnectingModule.forRoot(),
-    BrowserAnimationsModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    ReactiveFormsModule,
-    MatDialogModule,
-    HttpClientModule,
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
