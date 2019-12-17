@@ -13,7 +13,7 @@ import { EntryFormComponent } from './components/entry-form/entry-form.component
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NotFoundPageComponent } from './components/layout/not-found-page/not-found-page.component';
 import { FormComponent } from './shared/components/form/form.component';
-import { MatButtonModule, MatDialogModule, MatIconModule, MatInputModule } from '@angular/material';
+import {MatButtonModule, MatDialogModule, MatIconModule, MatInputModule, MatMenuModule} from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomePageComponent } from './components/layout/home-page/home-page.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
@@ -34,27 +34,28 @@ import { UserEffect } from './store/effects';
     CapitalizePipe,
     RentPageComponent,
   ],
-  imports: [
-    FormsModule,
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    ReactiveFormsModule,
-    MatDialogModule,
-    HttpClientModule,
-    StoreModule.forRoot(reducers, {
-      metaReducers,
-      runtimeChecks: {
-        strictStateImmutability: true,
-        strictActionImmutability: true
-      }
-    }),
-    EffectsModule.forRoot([AppEffects, UserEffect]),
-    StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
-  ],
+    imports: [
+        FormsModule,
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+        ReactiveFormsModule,
+        MatDialogModule,
+        HttpClientModule,
+        StoreModule.forRoot(reducers, {
+            metaReducers,
+            runtimeChecks: {
+                strictStateImmutability: true,
+                strictActionImmutability: true
+            }
+        }),
+        EffectsModule.forRoot([AppEffects, UserEffect]),
+        StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
+        MatMenuModule,
+    ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
 })

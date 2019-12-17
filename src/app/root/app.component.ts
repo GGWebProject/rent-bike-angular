@@ -2,9 +2,10 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material';
 import {EntryFormComponent} from '../components/entry-form/entry-form.component';
 import {Observable, Subscription} from 'rxjs';
-import {getLoginStatus, IState} from '../store/reducers';
+import {getLoginStatus, getUser, IState} from '../store/reducers';
 import {select, Store} from '@ngrx/store';
 import * as fromStore from '../store';
+import {User} from '../common/entities';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,7 @@ import * as fromStore from '../store';
 export class AppComponent implements OnInit, OnDestroy {
   title = 'rent-bike-front-end';
   public isLogin$: Observable<boolean>;
+  public user$: Observable<User>;
   private loginSub: Subscription;
 
   constructor(
@@ -23,6 +25,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.isLogin$ = this.store.pipe(select(getLoginStatus));
+    this.user$ = this.store.pipe(select(getUser));
     this.loginSub = this.isLogin$.subscribe(
       (isLogin: boolean) => {
         if (isLogin) {

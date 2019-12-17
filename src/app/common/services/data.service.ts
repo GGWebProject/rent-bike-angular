@@ -5,7 +5,7 @@ import {User} from '../entities';
 import {catchError, tap} from 'rxjs/operators';
 import {IAccessToken} from '../interfaces/iaccess-token';
 
-const backendUrl: string = 'http://localhost:3000';
+const backendUrl: string = 'http://localhost:5000';
 const usersUrl: string = `${backendUrl}/users`;
 
 @Injectable({

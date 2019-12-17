@@ -1,20 +1,36 @@
 <header>
-  <app-navigation></app-navigation>
-  <ng-container *ngIf="!(isLogin$ | async); else signOutButton">
-    <button
-      mat-raised-button
-      color="accent"
-      (click)="openSignInModal()"
-    >Login</button>
-  </ng-container>
-  <ng-template #signOutButton>
-    <button
-    mat-raised-button
-    color="accent"
-    (click)="signOut()">
-      Logout
-    </button>
-  </ng-template>
+  <div class="wrapper">
+    <app-navigation></app-navigation>
+    <ng-container *ngIf="!(isLogin$ | async); else signOutButton">
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="openSignInModal()"
+      >Login</button>
+    </ng-container>
+    <ng-template #signOutButton>
+      <button
+        class
+        mat-button
+        [matMenuTriggerFor]="menu">
+        {{(user$ | async)?.userName}}
+      </button>
+      <mat-menu #menu="matMenu">
+        <ul>
+          <li>
+            <a mat-menu-item routerLink="/rent-bike">Item 1</a>
+          </li>
+          <li>
+            <button
+              mat-menu-item
+              (click)="signOut()">
+              Logout
+            </button>
+          </li>
+        </ul>
+      </mat-menu>
+    </ng-template>
+  </div>
 </header>
 <main class="layout">
   <router-outlet></router-outlet>
